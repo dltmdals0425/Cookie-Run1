@@ -4,11 +4,21 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance;
     [SerializeField] private float jumpForce = 10f;//점프의 힘
     private Rigidbody2D rb;//해당 오브젝트에 물리를 적용
     private bool isGruond = true;//바닥에 닿아 있는지를 체크
     private Vector3 origianlScale = Vector3.one;//캐릭터의 원래 크기
     private Animator anim;
+    private bool isControll =false;
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            return;
+        }
+        Instance = this;
+    }
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -17,15 +27,24 @@ public class PlayerController : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
        
     }
+    public void GameStart()
+    {
+        if (rb != null)
+            rb.gravityScale = 3.0f;
+        isControll=true;
+
+    }
 
       private void Update()
     {
-        
-        if (Input.GetKeyDown(KeyCode.Space)&& isGruond)
+        if (isControll)
         {
-            rb.velocity = new Vector2(0f, jumpForce);      //벨로시티는 방향과 속도를 합쳐진개념
-            isGruond=false;//여러번 점프가 되지않도록 방지.
-            
+            if (Input.GetKeyDown(KeyCode.Space) && isGruond)
+            {
+                rb.velocity = new Vector2(0f, jumpForce);      //벨로시티는 방향과 속도를 합쳐진개념
+                isGruond = false;//여러번 점프가 되지않도록 방지.
+
+            }
         }
         anim.SetBool("jumping", !isGruond);
     }
