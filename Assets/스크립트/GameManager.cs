@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
         PlayerController.Instance.GameStart(); //캐릭터 조작시작
         ScoreManager.Instance.GameStart(); //점수 카운트 시작.
         BackgroundScroller.Intance.GameStart();//배경 스크롤 시작
+
     }
 
 }
